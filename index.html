@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Put whatever you want on this page!</title>
+    <link rel="stylesheet" href="index.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, height=device-height" />
+    <meta name="language" content="English">
+    <script>
+        function checkinput(data) {
+            if (data.keyCode == 13) {
+                pushtext();
+            }
+        }
+        function getthing(){
+            fetch("https://script.google.com/macros/s/AKfycbzru_X5Tr71jozRZaPaysGWPnyMQZpwQJ4VntrSDIffXiogz-A/exec")
+            .then(a => a.text())
+            .then(result => {
+                document.getElementById("currenttext").innerHTML=result;
+            });
+        }
+        function init(){
+            getthing();
+            setInterval(getthing,30*1000*0.7
+            )
+        }
+        function pushtext(){
+            document.getElementById("output").innerHTML="<p id='subbed'>working...</p>";
+            fetch("https://script.google.com/macros/s/AKfycbzru_X5Tr71jozRZaPaysGWPnyMQZpwQJ4VntrSDIffXiogz-A/exec?q="+encodeURIComponent(document.getElementById("input").value))
+            .then(a => a.json())
+            .then(result => {
+                if(result.success){
+                    document.getElementById("output").innerHTML="<p id='subbed'>Your text should appear shortly</p>";
+                    document.getElementById("input").value = "";
+                    getthing();
+                }
+                else{
+                    document.getElementById("output").innerHTML="<p id='notsubbed'>ERROR try again</p>";
+                }
+            });
+        }
+    </script>
+</head>
+
+<body onload="init()">
+    <h1 id="signup">Put any text on this page</h1>
+    <div class="row">
+        <div class="column" id="left">
+            <h1>Enter the text you want to display</h1>
+            <div>
+                <span class="spnn"></span>
+                <input placeholder="put something cool on this page" onkeypress="checkinput(event)" maxlength="150" id="input">
+                <span class="spnn"></span>
+            </div>
+            <div class="openbutton" onclick="pushtext()"><span
+                    style="vertical-align: middle; display: inline-block; line-height: 50px;">Add to queue!</span>
+            </div>
+            <div id="output"></div>
+            
+        </div>
+        <div class="column">
+            <h1 id="currenttext">loading...</h1>
+        </div>
+    </div>
+    <p id="itseasy">
+        The text you put in the input will be added to a queue. When the queue reaches your turn, your text will
+        appear on the page for a couple seconds.
+    </p>
+</body>
+
+</html>
