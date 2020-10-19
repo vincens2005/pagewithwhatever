@@ -1,2 +1,2 @@
 # pagewithwhatever
-anytext.gq
+anytext.cf
