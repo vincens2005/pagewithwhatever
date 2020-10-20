@@ -13,32 +13,33 @@
                 pushtext();
             }
         }
-        function getthing(){
+        function getthing() {
             fetch("https://script.google.com/macros/s/AKfycbzru_X5Tr71jozRZaPaysGWPnyMQZpwQJ4VntrSDIffXiogz-A/exec")
-            .then(a => a.text())
-            .then(result => {
-                document.getElementById("currenttext").innerHTML=result;
-            });
+                .then(a => a.text())
+                .then(result => {
+                    document.getElementById("currenttext").innerHTML = result;
+                });
         }
-        function init(){
+        function init() {
             getthing();
-            setInterval(getthing,30*1000*0.7
-            )
+            setInterval(getthing, 15 * 1000 * 0.7);
         }
-        function pushtext(){
-            document.getElementById("output").innerHTML="<p id='subbed'>working...</p>";
-            fetch("https://script.google.com/macros/s/AKfycbzru_X5Tr71jozRZaPaysGWPnyMQZpwQJ4VntrSDIffXiogz-A/exec?q="+encodeURIComponent(document.getElementById("input").value))
-            .then(a => a.json())
-            .then(result => {
-                if(result.success){
-                    document.getElementById("output").innerHTML="<p id='subbed'>Your text should appear shortly</p>";
-                    document.getElementById("input").value = "";
-                    getthing();
-                }
-                else{
-                    document.getElementById("output").innerHTML="<p id='notsubbed'>ERROR try again</p>";
-                }
-            });
+        function pushtext() {
+            if(document.getElementById("input").value != null && document.getElementById("input").value != "") {
+                document.getElementById("output").innerHTML = "<p id='subbed'>working...</p>";
+                fetch("https://script.google.com/macros/s/AKfycbzru_X5Tr71jozRZaPaysGWPnyMQZpwQJ4VntrSDIffXiogz-A/exec?q=" + encodeURIComponent(document.getElementById("input").value))
+                    .then(a => a.json())
+                    .then(result => {
+                        if (result.success) {
+                            document.getElementById("output").innerHTML = "<p id='subbed'>Your text should appear shortly</p>";
+                            document.getElementById("input").value = "";
+                            getthing();
+                        }
+                        else {
+                            document.getElementById("output").innerHTML = "<p id='notsubbed'>ERROR try again</p>";
+                        }
+                    });
+            }
         }
     </script>
 </head>
@@ -50,14 +51,15 @@
             <h1>Enter the text you want to display</h1>
             <div>
                 <span class="spnn"></span>
-                <input placeholder="put something cool on this page" onkeypress="checkinput(event)" maxlength="150" id="input">
+                <input placeholder="put something cool on this page" onkeypress="checkinput(event)" maxlength="150"
+                    id="input">
                 <span class="spnn"></span>
             </div>
             <div class="openbutton" onclick="pushtext()"><span
                     style="vertical-align: middle; display: inline-block; line-height: 50px;">Add to queue!</span>
             </div>
             <div id="output"></div>
-            
+
         </div>
         <div class="column">
             <h1 id="currenttext">loading...</h1>
@@ -67,7 +69,7 @@
         The text you put in the input will be added to a queue. When the queue reaches your turn, your text will
         appear on the page for a couple seconds.
     </p>
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5f8e395d67539ff5"></script> 
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5f8e395d67539ff5"></script>
 </body>
 
 </html>
